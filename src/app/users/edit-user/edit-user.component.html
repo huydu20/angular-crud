@@ -1,0 +1,94 @@
+<div *ngIf="user$ | async as user; else loading">
+  <div class="flex flex-col gap-8">
+    <h1 class="text-4xl font-bold">Edit User</h1>
+    <form [formGroup]="editForm" (ngSubmit)="editUserSubmit()" class="relative flex w-full flex-col gap-8">
+      <div class="warning-alert flex justify-between" *ngIf="showAlert && isExisting">
+        <span>Username much be difference!</span><button (click)="showAlert = false" class="px-2">X</button>
+      </div>
+      <div class="success-alert flex justify-between" *ngIf="showAlert && isSuccess">
+        <span>Update user successful!</span><button (click)="showAlert = false" class="px-2">X</button>
+      </div>
+      <div class="flex gap-8">
+        <div class="flex flex-1 flex-col gap-4">
+          <label class="text-base" for="firstName">First name</label>
+          <input
+            class="rounded-lg border border-slate-300 p-2 outline-none focus:outline-blue-500"
+            type="text"
+            placeholder="First name"
+            id="firstName"
+            formControlName="firstName"
+          />
+          <div
+            class="text-base text-rose-500"
+            *ngIf="(editForm.get('firstName')?.errors?.['required'] && editForm.controls['firstName'].touched) || (isSubmit && editForm.controls['firstName'].errors)"
+          >
+            First name is required!
+          </div>
+        </div>
+        <div class="flex flex-1 flex-col gap-4">
+          <label class="text-base" for="lastName">Last name</label>
+          <input
+            class="rounded-lg border border-slate-300 p-2 outline-none focus:outline-blue-500"
+            type="text"
+            placeholder="Last name"
+            id="lastName"
+            formControlName="lastName"
+          />
+          <div
+            class="text-base text-rose-500"
+            *ngIf="(editForm.get('lastName')?.errors?.['required'] && editForm.controls['lastName'].touched) ||(isSubmit && editForm.controls['lastName'].errors)"
+          >
+            Last name is required!
+          </div>
+        </div>
+      </div>
+      <div class="flex gap-8">
+        <div class="flex flex-1 flex-col gap-4">
+          <label class="text-base" for="username">Username</label>
+          <input
+            class="rounded-lg border border-slate-300 p-2 outline-none focus:outline-blue-500"
+            type="text"
+            placeholder="Username"
+            id="username"
+            formControlName="username"
+          />
+          <div
+            class="text-base text-rose-500"
+            *ngIf="(editForm.get('username')?.errors?.['required'] && editForm.controls['username'].touched) || (isSubmit && editForm.controls['username'].errors)"
+          >
+            Username is required!
+          </div>
+        </div>
+        <div class="flex flex-1 flex-col gap-4">
+          <label class="text-base" for="password">Password  <span class="italic">(Leave blank to keep the same password)</span></label>
+          <input
+            class="rounded-lg border border-slate-300 p-2 outline-none focus:outline-blue-500"
+            type="password"
+            placeholder="Password"
+            id="password"
+            formControlName="password"
+          />
+          <div
+            class="text-base text-rose-500"
+            *ngIf="editForm.get('password')?.errors?.['minlength'] && editForm.controls['password'].dirty"
+          >
+            The password must be at least 6 characters!
+          </div>
+        </div>
+      </div>
+      <div *ngIf="!isSubmit; else back" class="flex items-center gap-4">
+        <button type="submit" class="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Submit</button>
+        <a routerLink="/users" class="text-blue-500 underline underline-offset-2">Cancel</a>
+      </div>
+      <ng-template #back>
+        <div class="flex items-center gap-4">
+          <button (click)="isEdited()" class="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Back</button>
+        </div>
+      </ng-template>
+    </form>
+  </div>
+</div>
+
+<ng-template #loading>
+  <app-loading></app-loading>
+</ng-template>

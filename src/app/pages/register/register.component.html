@@ -1,0 +1,89 @@
+<div class="flex h-screen w-screen items-center justify-center">
+  <form
+    [formGroup]="registerForm"
+    (ngSubmit)="registerSubmit()"
+    class="relative flex w-[420px] flex-col gap-4 rounded-lg border border-slate-200 shadow-xl"
+  >
+    <div class="warning-alert flex justify-between" *ngIf="showAlert && isExisting">
+      <span>Username was existing!</span><button (click)="showAlert = false" class="px-2">X</button>
+    </div>
+    <div class="success-alert flex justify-between" *ngIf="showAlert && isSuccess">
+      <span>Create user successful!</span><button (click)="showAlert = false" class="px-2">X</button>
+    </div>
+    <h1 class="rounded-t-lg bg-slate-300 px-6 py-4 text-3xl font-semibold">Register</h1>
+    <div class="flex flex-col gap-2 px-6">
+      <label for="firstName">First name</label>
+      <input
+        class="rounded-lg border border-slate-300 p-2 outline-none focus:outline-blue-500"
+        type="text"
+        placeholder="First name"
+        id="firstName"
+        formControlName="firstName"
+      />
+      <div
+        class="text-base text-rose-500"
+        *ngIf="(registerForm.get('firstName')?.errors?.['required'] && registerForm.controls['firstName'].touched) || (isSubmit && registerForm.controls['firstName'].errors)"
+      >
+        First name is required!
+      </div>
+    </div>
+    <div class="flex flex-col gap-2 px-6">
+      <label for="lastName">Last name</label>
+      <input
+        class="rounded-lg border border-slate-300 p-2 outline-none focus:outline-blue-500"
+        type="text"
+        placeholder="Last name"
+        id="lastName"
+        formControlName="lastName"
+      />
+      <div
+        class="text-base text-rose-500"
+        *ngIf="(registerForm.get('lastName')?.errors?.['required'] && registerForm.controls['lastName'].touched) ||(isSubmit && registerForm.controls['lastName'].errors)"
+      >
+        Last name is required!
+      </div>
+    </div>
+    <div class="flex flex-col gap-2 px-6">
+      <label for="username">Username</label>
+      <input
+        class="rounded-lg border border-slate-300 p-2 outline-none focus:outline-blue-500"
+        type="text"
+        placeholder="Username"
+        id="username"
+        formControlName="username"
+      />
+      <div
+        class="text-base text-rose-500"
+        *ngIf="(registerForm.get('username')?.errors?.['required'] && registerForm.controls['username'].touched) || (isSubmit && registerForm.controls['username'].errors)"
+      >
+        Username is required!
+      </div>
+    </div>
+    <div class="flex flex-col gap-2 px-6">
+      <label for="password">Password</label>
+      <input
+        class="rounded-lg border border-slate-300 p-2 outline-none focus:outline-blue-500"
+        type="password"
+        placeholder="Password"
+        id="password"
+        formControlName="password"
+      />
+      <div
+        class="text-base text-rose-500"
+        *ngIf="registerForm.get('password')?.errors?.['minlength'] && registerForm.controls['password'].dirty"
+      >
+        The password must be at least 6 characters!
+      </div>
+      <div
+        class="text-base text-rose-500"
+        *ngIf="(registerForm.get('password')?.errors?.['required'] && registerForm.controls['password'].touched) || (isSubmit && registerForm.get('password')?.errors?.['required'])"
+      >
+        Password is required!
+      </div>
+    </div>
+    <div class="flex items-center gap-4 px-6 py-4">
+      <button type="submit" class="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">Submit</button>
+      <a routerLink="/login" class="text-blue-500 underline underline-offset-2">Already has a account?</a>
+    </div>
+  </form>
+</div>
