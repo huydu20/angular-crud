@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class RegisterComponent implements OnInit {
   isExisting = false;
   isSuccess = false;
 
-  constructor(private fb: FormBuilder, private userService: UserService) {}
+  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
     this.registerForm = this.fb.group({
@@ -40,8 +41,12 @@ export class RegisterComponent implements OnInit {
     } else {
       this.showAlert = true;
       this.isSuccess = true;
-      this.isSubmit = false;
+      this.isSubmit = false
       this.registerForm.reset();
     }
+  }
+
+  login() {
+    this.router.navigate(['/login'])
   }
 }

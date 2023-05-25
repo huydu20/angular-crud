@@ -72,7 +72,7 @@ export class UserService {
       this.storageService.setObject('currentUser', user);
       this.currentUser = user;
       this.currentUserSubject?.next(this.currentUser);
-      this.router.navigate(['/home']);
+      this.router.navigate(['']);
       return true;
     }
   }
@@ -81,7 +81,7 @@ export class UserService {
     this.currentUser = null;
     this.currentUserSubject.next(this.currentUser);
     this.storageService.remove('currentUser');
-    this.router.navigate(['/login']);
+    this.router.navigate(['/account/login']);
   }
 
   private updateData() {

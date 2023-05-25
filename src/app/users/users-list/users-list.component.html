@@ -9,16 +9,16 @@
     <table style="width: 100%">
       <thead>
         <tr>
-          <th style="text-align: start">ID</th>
+          <th style="text-align: start">Index</th>
           <th style="text-align: start">First Name</th>
           <th style="text-align: start">Last Name</th>
           <th style="text-align: start">Username</th>
-          <th style="width: 10%"></th>
+          <th style="width: 10%">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users$ | async; let even = even; let odd = odd" [ngClass]="{ even: even, odd: odd }">
-          <td>{{ user.id }}</td>
+        <tr *ngFor="let user of users$ | async;let idx = index; let even = even; let odd = odd" [ngClass]="{ even: even, odd: odd }">
+          <td>{{ idx + 1 }}</td>
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.username }}</td>

@@ -1,30 +1,38 @@
-<div class="wrapper flex min-h-screen flex-col">
-  <ng-container *ngIf="user$ | async">
-    <div class="fixed h-[60px] w-screen bg-gray-600 text-base text-white">
-      <div class="container mx-auto flex h-full items-center justify-between">
-        <div class="flex gap-4 text-gray-300">
-          <a routerLink="home" class="transition-all hover:text-white">Home</a>
-          <a routerLink="" class="transition-all hover:text-white">Products</a>
-          <a routerLink="users" class="transition-all hover:text-white">Users</a>
+<ng-container *ngIf="user$ | async">
+  <div class="fixed h-[60px] w-screen bg-gray-600 text-base text-white">
+    <div class="container mx-auto flex h-full items-center justify-between">
+      <div class="flex gap-4 text-gray-300">
+        <a routerLink="" class="transition-all hover:text-white">Home</a>
+        <a routerLink="" class="transition-all hover:text-white">Products</a>
+        <a routerLink="users" class="transition-all hover:text-white">Users</a>
+      </div>
+      <div class="flex gap-4">
+        <div *ngIf="user$ | async as user">
+          <span>Hello {{ user.firstName }} !</span>
         </div>
-        <div class="flex gap-4">
-          <div *ngIf="user$ | async as user">
-            <span>Hello {{ user.firstName }} !</span>
-          </div>
-          <button class="text-gray-300 transition-all hover:text-white" (click)="logout()">Logout</button>
-        </div>
+        <button class="text-gray-300 transition-all hover:text-white" (click)="logout()">Logout</button>
       </div>
     </div>
-  </ng-container>
+  </div>
+</ng-container>
+<div class="wrapper flex min-h-screen flex-col">
   <div class="flex-1 bg-gray-100">
     <router-outlet></router-outlet>
   </div>
   <ng-container *ngIf="user$ | async">
     <div class="py-8">
       <div class="flex justify-center gap-2">
-        <a href="" class="text-base text-blue-500 underline underline-offset-2 hover:text-blue-600">Angular CRUD</a>
+        <a
+          href="https://github.com/huydu20/angular-crud"
+          class="text-base text-blue-500 underline underline-offset-2 hover:text-blue-600"
+          >Angular CRUD</a
+        >
         <span>|</span>
-        <a href="" class="text-base text-blue-500 underline underline-offset-2 hover:text-blue-600">by Van Huy Du</a>
+        <a
+          href="https://github.com/huydu20"
+          class="text-base text-blue-500 underline underline-offset-2 hover:text-blue-600"
+          >by Van Huy Du</a
+        >
       </div>
     </div>
   </ng-container>
