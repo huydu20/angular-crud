@@ -5,6 +5,7 @@
       >Add user</a
     >
   </div>
+  <app-search-user></app-search-user>
   <div>
     <table style="width: 100%">
       <thead>
@@ -16,8 +17,11 @@
           <th style="width: 10%">Actions</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let user of users$ | async;let idx = index; let even = even; let odd = odd" [ngClass]="{ even: even, odd: odd }">
+      <tbody class="">
+        <tr
+          *ngFor="let user of users; let idx = index; let even = even; let odd = odd"
+          [ngClass]="{ even: even, odd: odd }"
+        >
           <td>{{ idx + 1 }}</td>
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
@@ -36,12 +40,24 @@
             </button>
           </td>
         </tr>
-        <tr *ngIf="!(users$ | async)">
-          <td colspan="5">
-            <app-loading></app-loading>
-          </td>
-        </tr>
+        <ng-container *ngIf="!users">
+          <tr>
+            <td colspan="5">
+              <app-loading></app-loading>
+            </td>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="users.length === 0">
+          <tr>
+            <td colspan="5" class="text-center">No users.</td>
+          </tr>
+        </ng-container>
       </tbody>
     </table>
   </div>
+  <ng-container *ngIf="users.length !== 0">
+    <div class="float-right">
+      <app-pagination></app-pagination>
+    </div>
+  </ng-container>
 </div>

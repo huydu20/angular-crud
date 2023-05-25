@@ -1,0 +1,11 @@
+<ul class="pagination flex">
+  <li class="">
+    <button [disabled]="currentPage === 0" [ngClass]="{disabled : currentPage === 0}">Previous</button>
+  </li>
+  <li class=""><button>{{ currentPage + 1}}</button></li>
+  <li class=""><button>{{ currentPage + 2}}</button></li>
+  <li class=""><button>{{ currentPage + 3}}</button></li>
+  <li class="">
+    <button>Next</button>
+  </li>
+</ul>

@@ -1,0 +1,11 @@
+<div class="search flex gap-4 max-w-[360px]">
+  <span class="search-icon"><fa-icon [icon]="icons.search"></fa-icon></span>
+  <input
+    [formControl]="queryControl"
+    class="border border-gray-300 shadow-sm rounded-md pl-11 pr-4 flex-1 py-2 outline-none transition-all focus:outline-blue-500"
+    id="search-input"
+    type="text"
+    placeholder="Input username ... "
+  />
+  <span *ngIf="isLoading" class="loading-icon animate-spin"><fa-icon [icon]="icons.loading"></fa-icon></span>
+</div>

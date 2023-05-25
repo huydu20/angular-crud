@@ -5,9 +5,11 @@ import { UsersComponent } from './users.component';
 import { UsersListComponent } from './users-list/users-list.component';
 import { LoginGuard } from '../guards/login.guard';
 import { AddUserComponent } from './add-user/add-user.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditUserComponent } from './edit-user/edit-user.component';
 import { SharedModule } from '../shared/shared.module';
+import { SearchUserComponent } from './search-user/search-user.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 const routes: Routes = [
   {
@@ -23,8 +25,15 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [UsersComponent, UsersListComponent, AddUserComponent, EditUserComponent],
-  imports: [CommonModule, SharedModule, ReactiveFormsModule, RouterModule.forChild(routes)],
+  declarations: [UsersComponent, UsersListComponent, AddUserComponent, EditUserComponent, SearchUserComponent],
+  imports: [
+    CommonModule,
+    SharedModule,
+    FontAwesomeModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule.forChild(routes),
+  ],
   exports: [RouterModule],
 })
 export class UsersModule {}
