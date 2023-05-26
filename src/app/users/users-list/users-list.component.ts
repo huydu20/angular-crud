@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { delay, tap } from 'rxjs';
+import { utils, writeFile } from 'xlsx';
+
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 
@@ -12,8 +14,13 @@ export class UsersListComponent implements OnInit {
   users: User[] = [];
   displayUser: User[] = [];
   isLoading = false;
+  isSearching = false;
   currentPage = 1;
   numOfItemOnPage = 5;
+  showModalDelete: boolean = false;
+  modalEvent: boolean = false;
+
+  userIdToDelete: number = 0;
 
   constructor(private userService: UserService) {}
 
@@ -34,11 +41,52 @@ export class UsersListComponent implements OnInit {
       });
   }
 
-  deleteUser(id: number) {
-    this.userService.deleteUser(id);
+  deleteUser() {
+    this.userService.deleteUser(this.userIdToDelete);
+    this.showModalDelete = false;
+  }
+
+  onCloseDeleteModal(event: boolean) {
+    this.modalEvent = event;
+    this.showModalDelete = false;
   }
 
   updateDisplayList(event: User[]) {
-    this.displayUser = event
+    this.displayUser = event;
+    const reader = new FileReader();
+  }
+
+  updateCurrentPage(current: number) {
+    this.currentPage = current;
+  }
+
+  onSearching(event: boolean) {
+    this.isSearching = event;
+  }
+
+  setUserIdToDelete(id: number) {
+    this.userIdToDelete = id;
+    this.showModalDelete = true;
+  }
+
+  importCSV() {
+
+  }
+
+  exportToCSV() {
+    if (this.users.length === 0) {
+      return alert('Empty list!');
+    } else {
+      const heading = [['ID', 'Username', 'Password', 'First Name', "Last Name"]];
+      const wb = utils.book_new();
+      const ws = utils.json_to_sheet([]);
+      utils.sheet_add_aoa(ws, heading);
+      utils.sheet_add_json(ws, this.users, {
+        origin: 'A2',
+        skipHeader: true,
+      });
+      utils.book_append_sheet(wb, ws, 'Users');
+      writeFile(wb, 'data.csv');
+    }
   }
 }

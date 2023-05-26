@@ -5,15 +5,11 @@
       >Add user</a
     >
     <div class="flex gap-4">
-      <a routerLink="add" class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700"
-        >Import</a
-      >
-      <a routerLink="add" class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700"
-        >Export</a
-      >
+      <button class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700">Import</button>
+      <button (click)="exportToCSV()" class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700">Export</button>
     </div>
   </div>
-  <app-search-user></app-search-user>
+  <app-search-user (isSearching)="onSearching($event)"></app-search-user>
   <div>
     <table style="width: 100%">
       <thead>
@@ -26,11 +22,8 @@
         </tr>
       </thead>
       <tbody class="">
-        <tr
-          *ngFor="let user of displayUser; let idx = index; let even = even; let odd = odd"
-          [ngClass]="{ even: even, odd: odd }"
-        >
-          <td>{{ idx + 1 }}</td>
+        <tr *ngFor="let user of displayUser; let even = even; let odd = odd" [ngClass]="{ even: even, odd: odd }">
+          <td>{{ user.id }}</td>
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.username }}</td>
@@ -41,7 +34,7 @@
               >Edit</a
             >
             <button
-              (click)="deleteUser(user.id)"
+              (click)="setUserIdToDelete(user.id)"
               class="rounded-md bg-rose-500 px-2 py-1 text-base text-white transition-all hover:bg-rose-600"
             >
               Delete
@@ -64,8 +57,23 @@
     </table>
   </div>
   <ng-container *ngIf="users.length !== 0">
-    <div class="mt-4 flex justify-end">
+    <div class="mt-4 flex justify-end" *ngIf="!isSearching; else searching">
       <app-pagination [list]="users" (changePage)="updateDisplayList($event)"></app-pagination>
     </div>
+    <ng-template #searching>
+      <div class="mt-4 flex justify-end">
+        <span>searching</span>
+        <app-pagination [list]="displayUser" (changePage)="updateDisplayList($event)"></app-pagination>
+      </div>
+    </ng-template>
   </ng-container>
 </div>
+
+<ng-container *ngIf="showModalDelete">
+  <app-modal
+    (onClose)="onCloseDeleteModal($event)"
+    (onAccept)="deleteUser()"
+    title="Delete User"
+    content="This action cannot be undone. Are you sure you want to continue?"
+  ></app-modal>
+</ng-container>

@@ -22,5 +22,5 @@ button.disabled {
 }
 
 button.active {
-  @apply bg-blue-500 text-white;
+  @apply bg-blue-500 text-white border-none;
 }
