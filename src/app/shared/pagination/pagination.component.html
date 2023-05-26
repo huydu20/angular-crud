@@ -1,11 +1,13 @@
 <ul class="pagination flex">
   <li class="">
-    <button [disabled]="currentPage === 0" [ngClass]="{disabled : currentPage === 0}">Previous</button>
+    <button class="first" (click)="previousPage(currentPage - 1)" [disabled]="currentPage === 1" [ngClass]="{ disabled: currentPage === 1 }">Previous</button>
   </li>
-  <li class=""><button>{{ currentPage + 1}}</button></li>
-  <li class=""><button>{{ currentPage + 2}}</button></li>
-  <li class=""><button>{{ currentPage + 3}}</button></li>
+  <li *ngFor="let page of pageList; let idx = index">
+    <button [ngClass]="{active : idx + 1 === currentPage}" (click)="onChangePage(idx + 1)">{{ page }}</button>
+  </li>
   <li class="">
-    <button>Next</button>
+    <button class="last" (click)="nextPage(currentPage + 1)" [disabled]="currentPage === currentPageSize" [ngClass]="{ disabled: currentPage === currentPageSize }">
+      Next
+    </button>
   </li>
 </ul>

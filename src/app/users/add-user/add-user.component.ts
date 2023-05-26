@@ -32,7 +32,6 @@ export class AddUserComponent implements OnInit {
       return;
     }
     const data = this.addForm.value;
-    console.log(data)
 
     if (!this.userService.addUser(data.username, data.password, data.firstName, data.lastName)) {
       this.showAlert = true;

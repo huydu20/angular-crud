@@ -1,9 +1,17 @@
 <div class="flex flex-col gap-4">
   <h1 class="text-4xl font-bold">Users</h1>
-  <div class="flex">
+  <div class="flex justify-between">
     <a routerLink="add" class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700"
       >Add user</a
     >
+    <div class="flex gap-4">
+      <a routerLink="add" class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700"
+        >Import</a
+      >
+      <a routerLink="add" class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700"
+        >Export</a
+      >
+    </div>
   </div>
   <app-search-user></app-search-user>
   <div>
@@ -19,7 +27,7 @@
       </thead>
       <tbody class="">
         <tr
-          *ngFor="let user of users; let idx = index; let even = even; let odd = odd"
+          *ngFor="let user of displayUser; let idx = index; let even = even; let odd = odd"
           [ngClass]="{ even: even, odd: odd }"
         >
           <td>{{ idx + 1 }}</td>
@@ -40,14 +48,14 @@
             </button>
           </td>
         </tr>
-        <ng-container *ngIf="!users">
+        <ng-container *ngIf="users.length === 0 && isLoading">
           <tr>
             <td colspan="5">
               <app-loading></app-loading>
             </td>
           </tr>
         </ng-container>
-        <ng-container *ngIf="users.length === 0">
+        <ng-container *ngIf="users.length === 0 && !isLoading">
           <tr>
             <td colspan="5" class="text-center">No users.</td>
           </tr>
@@ -56,8 +64,8 @@
     </table>
   </div>
   <ng-container *ngIf="users.length !== 0">
-    <div class="float-right">
-      <app-pagination></app-pagination>
+    <div class="mt-4 flex justify-end">
+      <app-pagination [list]="users" (changePage)="updateDisplayList($event)"></app-pagination>
     </div>
   </ng-container>
 </div>
