@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-modal',
@@ -8,8 +9,8 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class ModalComponent implements OnInit{
   @Input() title: string = ''
   @Input() content: string = ''
-  @Output() onClose = new EventEmitter<boolean>()
-  @Output() onAccept = new EventEmitter<boolean>()
+  @Output() onClose = new Subject<void>()
+  @Output() onAccept = new Subject<void>()
 
 
   ngOnInit(): void {
@@ -17,10 +18,10 @@ export class ModalComponent implements OnInit{
   }
 
   onCloseModal() {
-    this.onClose.emit(true)
+    this.onClose.next()
   }
 
   onAcceptModal() {
-    this.onAccept.emit(true)
+    this.onAccept.next()
   }
 }

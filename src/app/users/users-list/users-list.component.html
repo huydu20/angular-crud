@@ -5,8 +5,9 @@
       >Add user</a
     >
     <div class="flex gap-4">
-      <button class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700">Import</button>
-      <button (click)="exportToCSV()" class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700">Export</button>
+      <input class="hidden" type="file" name="importCSV" id="importCSV" accept=".csv" (change)="importCSV($event)">
+      <label class="cursor-pointer rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700" for="importCSV">Import</label>
+      <button (click)="onExport()" class="rounded-md bg-emerald-600 px-4 py-2 text-white transition-all hover:bg-emerald-700">Export</button>
     </div>
   </div>
   <app-search-user (isSearching)="onSearching($event)"></app-search-user>
@@ -14,11 +15,11 @@
     <table style="width: 100%">
       <thead>
         <tr>
-          <th style="text-align: start">Index</th>
+          <th style="text-align: start">ID</th>
           <th style="text-align: start">First Name</th>
           <th style="text-align: start">Last Name</th>
           <th style="text-align: start">Username</th>
-          <th style="width: 10%">Actions</th>
+          <th style="width: 10%; text-align: start">Actions</th>
         </tr>
       </thead>
       <tbody class="">
@@ -71,9 +72,17 @@
 
 <ng-container *ngIf="showModalDelete">
   <app-modal
-    (onClose)="onCloseDeleteModal($event)"
+    (onClose)="onCloseModal()"
     (onAccept)="deleteUser()"
     title="Delete User"
     content="This action cannot be undone. Are you sure you want to continue?"
+  ></app-modal>
+</ng-container>
+<ng-container *ngIf="showModalExport">
+  <app-modal
+    (onClose)="onCloseModal()"
+    (onAccept)="exportToCSV()"
+    title="Export to CSV"
+    content="Are you sure you want to continue?"
   ></app-modal>
 </ng-container>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { delay, tap } from 'rxjs';
-import { utils, writeFile } from 'xlsx';
+import { read, utils, writeFile } from 'xlsx';
 
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
@@ -18,7 +18,7 @@ export class UsersListComponent implements OnInit {
   currentPage = 1;
   numOfItemOnPage = 5;
   showModalDelete: boolean = false;
-  modalEvent: boolean = false;
+  showModalExport: boolean = false;
 
   userIdToDelete: number = 0;
 
@@ -46,14 +46,13 @@ export class UsersListComponent implements OnInit {
     this.showModalDelete = false;
   }
 
-  onCloseDeleteModal(event: boolean) {
-    this.modalEvent = event;
+  onCloseModal() {
     this.showModalDelete = false;
+    this.showModalExport = false;
   }
 
   updateDisplayList(event: User[]) {
     this.displayUser = event;
-    const reader = new FileReader();
   }
 
   updateCurrentPage(current: number) {
@@ -69,24 +68,59 @@ export class UsersListComponent implements OnInit {
     this.showModalDelete = true;
   }
 
-  importCSV() {
+  importCSV(event: any) {
+    const file = event.target.files[0];
+    const reader: FileReader = new FileReader();
+    reader.onload = (e: any) => {
+      const data = e.target.result;
+      const workbook = read(data, { type: 'array' });
 
+      // Get the first worksheet
+      const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+
+      // Convert the worksheet to JSON
+      const jsonData = utils.sheet_to_json(worksheet, { header: 1 });
+
+      // Process the JSON data
+      const list: User[] = [];
+      jsonData.forEach((user: any, index) => {
+        if (index !== 0) {
+          let temp: User = new User(user[0], user[1], user[2], user[3], user[4]);
+          list.push(temp)
+        }
+      });
+      this.userService.importDataFromFile(list)
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  onExport() {
+    this.showModalExport = true;
   }
 
   exportToCSV() {
     if (this.users.length === 0) {
       return alert('Empty list!');
     } else {
-      const heading = [['ID', 'Username', 'Password', 'First Name', "Last Name"]];
+      // convert ID to string
+      const newUsers = this.users.map((user) => {
+        return {
+          ...user,
+          id: user.id.toString(),
+        };
+      });
+      console.log(newUsers);
+      const heading = [['ID', 'Username', 'Password', 'First Name', 'Last Name']];
       const wb = utils.book_new();
       const ws = utils.json_to_sheet([]);
       utils.sheet_add_aoa(ws, heading);
-      utils.sheet_add_json(ws, this.users, {
+      utils.sheet_add_json(ws, newUsers, {
         origin: 'A2',
         skipHeader: true,
       });
       utils.book_append_sheet(wb, ws, 'Users');
       writeFile(wb, 'data.csv');
     }
+    this.showModalExport = false;
   }
 }

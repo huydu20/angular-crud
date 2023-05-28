@@ -32,8 +32,13 @@ export class UserService {
 
   updateToLocalStorage() {
     this.storageService.setObject(UserService.UsersStorageKey, this.users);
-    this.filterUsers(null, false)
+    this.filterUsers(null, false);
     this.updateData();
+  }
+
+  importDataFromFile(users: User[]) {
+    this.users = users;
+    this.updateToLocalStorage();
   }
 
   addUser(username: string, password: string, firstName: string, lastName: string): Boolean {
@@ -72,7 +77,7 @@ export class UserService {
     } else {
       this.filteredUsers = [...this.users];
     }
-    if(isFiltering) {
+    if (isFiltering) {
       this.updateData();
     }
   }
